@@ -20,14 +20,15 @@ A tiny, client-side tier list maker (think TierMaker), built as a no-build stati
 
 ## Running
 
-Open `index.html` in a browser, or serve the folder:
+Live at **https://thorsteingames.com/tier-ranker** (the Thorstein Games site proxies that path to this repo's GitHub Pages site, https://thorstein-games.github.io/tier-ranker/).
+
+Asset paths are absolute (`/tier-ranker/...`) so the app works with or without a trailing slash behind the proxy. To run it locally, serve the *parent* folder:
 
 ```sh
+cd ..
 python3 -m http.server 8000
-# then visit http://localhost:8000
+# then visit http://localhost:8000/tier-ranker/
 ```
-
-To host it, enable **GitHub Pages** for this repo (Settings → Pages → deploy from `main`, root folder).
 
 ## Possible next steps
 
