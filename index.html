@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tier Ranker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="title" contenteditable="true" spellcheck="false" title="Click to rename"></h1>
+    <div class="topbar-actions">
+      <button id="unrank-all" class="btn ghost" title="Move every item back to the pool">Unrank all</button>
+      <button id="start-over" class="btn ghost danger" title="Delete everything and start fresh">Start over</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="tiers" class="tiers" aria-label="Tiers"></section>
+
+    <div class="row-tools">
+      <button id="add-row" class="btn">+ Add row</button>
+      <span id="row-count" class="muted"></span>
+    </div>
+
+    <section class="pool-section" aria-label="Unranked items">
+      <div class="add-panel">
+        <form id="text-form" class="add-group">
+          <input id="text-input" type="text" maxlength="60" placeholder="Text item…" autocomplete="off" />
+          <button class="btn" type="submit">Add text</button>
+        </form>
+        <form id="url-form" class="add-group">
+          <input id="url-input" type="url" placeholder="Image URL…" autocomplete="off" />
+          <button class="btn" type="submit">Add link</button>
+        </form>
+        <label class="btn file-btn">
+          Upload images
+          <input id="file-input" type="file" accept="image/*" multiple hidden />
+        </label>
+      </div>
+      <p class="muted hint">Drag items into a tier. You can also drop or paste images anywhere on the page. Double-click a text item to edit it.</p>
+      <div id="pool" class="zone pool" data-zone="pool"></div>
+    </section>
+  </main>
+
+  <div id="trash" class="trash" aria-hidden="true">🗑 Drop here to delete</div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
