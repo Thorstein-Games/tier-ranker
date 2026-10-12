@@ -61,6 +61,8 @@ main { max-width: 1100px; margin: 0 auto; padding: 0 16px 120px; }
 .btn:hover:not(:disabled) { border-color: var(--accent); }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn.ghost { background: transparent; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+.btn.primary:hover { filter: brightness(1.1); }
 .btn.danger:hover { border-color: var(--danger); color: var(--danger); }
 
 input[type="text"], input[type="url"] {
@@ -158,10 +160,13 @@ input:focus { outline: none; border-color: var(--accent); }
 
 .row-tools {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   margin: 12px 0 24px;
 }
+
+#add-item { margin-left: auto; }
 
 /* ---------- pool ---------- */
 .pool-section {

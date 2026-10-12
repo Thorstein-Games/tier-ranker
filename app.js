@@ -313,6 +313,8 @@ async function addImageFiles(files) {
   toast(`Added ${images.length} image${images.length > 1 ? 's' : ''}.`);
 }
 
+$('#add-item').addEventListener('click', () => $('#file-input').click());
+
 $('#file-input').addEventListener('change', async (e) => {
   await addImageFiles(e.target.files);
   e.target.value = '';
