@@ -70,7 +70,7 @@ input[type="text"], input[type="url"] {
   border-radius: 8px;
   padding: 8px 10px;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 16px; /* below 16px, iOS Safari zooms in on focus */
   min-width: 0;
   flex: 1;
 }
@@ -171,9 +171,11 @@ input:focus { outline: none; border-color: var(--accent); }
   padding: 12px;
 }
 .add-panel { display: flex; flex-wrap: wrap; gap: 8px; }
-.add-group { display: flex; gap: 6px; flex: 1 1 260px; }
+.add-group { display: flex; gap: 6px; flex: 1 1 260px; min-width: 0; }
+.add-group input { width: 0; } /* let flex size it; avoids overflow on narrow screens */
 .file-btn { display: inline-flex; align-items: center; }
-.hint { margin: 10px 2px; }
+.hint { margin: 10px 2px 0; }
+.pool { margin-bottom: 12px; }
 .pool {
   min-height: calc(var(--item) * 1.5);
   background: var(--bg);

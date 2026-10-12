@@ -166,8 +166,8 @@ function renderRow(row, index) {
   const controls = document.createElement('div');
   controls.className = 'controls';
   controls.innerHTML = `
-    <input class="color-input" type="color" value="${row.color}" title="Row color" />
     <button class="icon-btn" data-act="up" title="Move up" ${index === 0 ? 'disabled' : ''}>▲</button>
+    <input class="color-input" type="color" value="${row.color}" title="Row color" />
     <button class="icon-btn" data-act="down" title="Move down" ${index === state.rows.length - 1 ? 'disabled' : ''}>▼</button>
     <button class="icon-btn del" data-act="del" title="Delete row" ${state.rows.length <= 1 ? 'disabled' : ''}>✕</button>`;
 
