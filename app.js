@@ -313,8 +313,6 @@ async function addImageFiles(files) {
   toast(`Added ${images.length} image${images.length > 1 ? 's' : ''}.`);
 }
 
-$('#add-item').addEventListener('click', () => $('#file-input').click());
-
 $('#file-input').addEventListener('change', async (e) => {
   await addImageFiles(e.target.files);
   e.target.value = '';
@@ -459,14 +457,16 @@ searchDialog.querySelector('.source-tabs').addEventListener('click', (e) => {
   if (searchInput.value.trim()) runSearch();
 });
 
-$('#open-search').addEventListener('click', () => {
+function openSearch() {
   searchDialog.showModal();
   searchInput.focus();
   searchInput.select();
   if (!searchResultsEl.children.length && !searchStatusEl.textContent) {
     searchStatusEl.textContent = 'Search for characters, games, movies, foods… then click images to add them.';
   }
-});
+}
+$('#open-search').addEventListener('click', openSearch);
+$('#add-item').addEventListener('click', openSearch);
 $('#search-close').addEventListener('click', () => searchDialog.close());
 // Close when clicking the backdrop (outside the dialog box).
 searchDialog.addEventListener('click', (e) => { if (e.target === searchDialog) searchDialog.close(); });
