@@ -320,14 +320,9 @@ $('#file-input').addEventListener('change', async (e) => {
   e.target.value = '';
 });
 
-$('#url-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const input = $('#url-input');
-  let url;
-  try { url = new URL(input.value.trim()).href; } catch { return toast('That doesn’t look like a valid URL.'); }
-
-  // Prefer a local copy (works offline, survives link rot). Many hosts block
-  // cross-origin fetches, so fall back to just remembering the link.
+// Prefer a local copy (works offline, survives link rot). Many hosts block
+// cross-origin fetches, so fall back to just remembering the link.
+async function addImageFromUrl(url) {
   try {
     const res = await fetch(url, { mode: 'cors' });
     if (!res.ok) throw new Error();
@@ -341,11 +336,140 @@ $('#url-form').addEventListener('submit', async (e) => {
       img.onerror = () => resolve(false);
       img.src = url;
     });
-    if (!ok) return toast('Couldn’t load an image from that link.');
+    if (!ok) return false;
     addItem({ id: uid(), type: 'image', url });
   }
+  return true;
+}
+
+$('#url-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = $('#url-input');
+  let url;
+  try { url = new URL(input.value.trim()).href; } catch { return toast('That doesn’t look like a valid URL.'); }
+  if (!(await addImageFromUrl(url))) return toast('Couldn’t load an image from that link.');
   input.value = '';
 });
+
+/* ---------------- image search (Wikimedia APIs: free, keyless, CORS-enabled) ---------------- */
+const SEARCH_SOURCES = {
+  // One image per article — great for characters, games, films, foods, people…
+  wikipedia: {
+    api: 'https://en.wikipedia.org/w/api.php',
+    params: (q) => ({
+      generator: 'search', gsrsearch: q, gsrlimit: 30,
+      prop: 'pageimages', piprop: 'thumbnail', pithumbsize: MAX_IMAGE_SIDE, pilimit: 'max', pilicense: 'any',
+    }),
+    toResult: (p) => p.thumbnail && { title: p.title, src: p.thumbnail.source },
+  },
+  // Free media library — many more images per topic.
+  commons: {
+    api: 'https://commons.wikimedia.org/w/api.php',
+    params: (q) => ({
+      generator: 'search', gsrsearch: q, gsrnamespace: 6, gsrlimit: 30,
+      prop: 'imageinfo', iiprop: 'url|mime', iiurlwidth: MAX_IMAGE_SIDE,
+    }),
+    toResult: (p) => {
+      const info = p.imageinfo?.[0];
+      if (!info?.thumburl || !info.mime?.startsWith('image/')) return null;
+      return { title: p.title.replace(/^File:/, '').replace(/\.[^.]+$/, ''), src: info.thumburl };
+    },
+  },
+};
+
+const searchDialog = $('#search-dialog');
+const searchInput = $('#search-input');
+const searchResultsEl = $('#search-results');
+const searchStatusEl = $('#search-status');
+const searchMoreBtn = $('#search-more');
+let search = { source: 'wikipedia', query: '', cont: null, token: 0 };
+
+async function runSearch(more = false) {
+  const query = searchInput.value.trim();
+  if (!query) return;
+  if (!more) {
+    search = { ...search, query, cont: null, token: search.token + 1 };
+    searchResultsEl.replaceChildren();
+  }
+  const { token, source } = search;
+  const src = SEARCH_SOURCES[source];
+  const params = new URLSearchParams({
+    action: 'query', format: 'json', formatversion: 2, origin: '*',
+    ...src.params(search.query), ...(more ? search.cont : {}),
+  });
+  searchStatusEl.textContent = 'Searching…';
+  searchMoreBtn.hidden = true;
+  let data;
+  try {
+    const res = await fetch(`${src.api}?${params}`);
+    if (!res.ok) throw new Error();
+    data = await res.json();
+  } catch {
+    if (token === search.token) searchStatusEl.textContent = 'Search failed — check your connection and try again.';
+    return;
+  }
+  if (token !== search.token) return; // a newer search started meanwhile
+  const pages = (data.query?.pages || []).sort((a, b) => a.index - b.index);
+  const results = pages.map(src.toResult).filter(Boolean);
+  searchResultsEl.append(...results.map(makeResultEl));
+  search.cont = data.continue || null;
+  searchMoreBtn.hidden = !search.cont;
+  const n = searchResultsEl.children.length;
+  searchStatusEl.textContent = n
+    ? 'Click an image to add it to your unranked items.'
+    : `No images found${search.cont ? ' yet — try loading more or' : ' — try'} a different search or source.`;
+}
+
+function makeResultEl({ title, src }) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'result';
+  btn.title = title;
+  btn.dataset.src = src;
+  const img = new Image();
+  img.alt = title;
+  img.loading = 'lazy';
+  img.src = src;
+  img.onerror = () => btn.remove();
+  const caption = document.createElement('span');
+  caption.textContent = title;
+  btn.append(img, caption);
+  return btn;
+}
+
+searchResultsEl.addEventListener('click', async (e) => {
+  const btn = e.target.closest('.result');
+  if (!btn || btn.classList.contains('busy')) return;
+  btn.classList.add('busy');
+  const ok = await addImageFromUrl(btn.dataset.src);
+  btn.classList.remove('busy');
+  if (!ok) return toast('Couldn’t add that image.');
+  btn.classList.add('added');
+  toast(`Added “${btn.title}”.`);
+});
+
+$('#search-form').addEventListener('submit', (e) => { e.preventDefault(); runSearch(); });
+searchMoreBtn.addEventListener('click', () => runSearch(true));
+
+searchDialog.querySelector('.source-tabs').addEventListener('click', (e) => {
+  const tab = e.target.closest('[data-source]');
+  if (!tab || tab.dataset.source === search.source) return;
+  search.source = tab.dataset.source;
+  for (const t of searchDialog.querySelectorAll('[data-source]')) t.setAttribute('aria-checked', t === tab);
+  if (searchInput.value.trim()) runSearch();
+});
+
+$('#open-search').addEventListener('click', () => {
+  searchDialog.showModal();
+  searchInput.focus();
+  searchInput.select();
+  if (!searchResultsEl.children.length && !searchStatusEl.textContent) {
+    searchStatusEl.textContent = 'Search for characters, games, movies, foods… then click images to add them.';
+  }
+});
+$('#search-close').addEventListener('click', () => searchDialog.close());
+// Close when clicking the backdrop (outside the dialog box).
+searchDialog.addEventListener('click', (e) => { if (e.target === searchDialog) searchDialog.close(); });
 
 // Paste images from the clipboard (when not typing in a field).
 window.addEventListener('paste', (e) => {

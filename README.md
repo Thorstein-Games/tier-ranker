@@ -5,11 +5,12 @@ A tiny, client-side tier list maker (think TierMaker), built as a no-build stati
 ## Features
 
 - Rank **text** or **image** items by dragging them between tiers (mouse and touch).
+- **Search for images** (🔍 Search images) on Wikipedia or Wikimedia Commons and click results to add them — no API key needed.
 - Add images by **file upload**, **URL**, **drag-and-drop** onto the page, or **paste** from the clipboard.
 - Up to **10 rows**, each with an editable name and color, and reorder/delete controls. Defaults: `S A B C D 💩`.
 - Drag an item onto the trash bin (appears while dragging) to delete it.
 - Double-click a text item to edit it; click the title or a row name to rename.
-- Everything is saved in the browser — nothing is uploaded anywhere.
+- Everything is saved in the browser — nothing is uploaded anywhere. (Image search sends your search terms to the Wikimedia API.)
 
 ## Storage
 
