@@ -1,0 +1,37 @@
+# Tier Ranker
+
+Client-side tier list maker. Plain HTML/CSS/JS with **no build step, no dependencies, no package.json**. Everything lives in three files:
+
+- `index.html`: markup, including the image-search `<dialog>`.
+- `app.js`: all logic, organised into `/* ---- section ---- */` blocks: IndexedDB, state, rendering, rows, adding items, image search, drag & drop.
+- `style.css`: dark theme driven by CSS variables in `:root`. The single mobile breakpoint is `@media (max-width: 600px)`.
+
+## Key invariants
+
+- **State** (`state`) is saved to `localStorage` under `tier-ranker:v1`. Its shape is `{ title, rows: [{id, name, color, items: [ids]}], pool: [ids], items: {id: item} }`. If you change the shape, keep `loadState()` able to read old saves, or bump the key.
+- **Image blobs** go in IndexedDB (`tier-ranker` DB, `images` store), keyed by item id. Items with `stored: true` live there. Items with only `url` are remote links, used when a host blocks CORS.
+- New images go through `addImageBlob` (downscales to `MAX_IMAGE_SIDE` and re-encodes as WebP) or `addImageFromUrl` (tries a CORS fetch first, falls back to a plain link). Reuse these; don't add a parallel path.
+- **Drag & drop** uses pointer events (mouse and touch), not the HTML5 DnD API. Anything with class `.item` is draggable. After a drop, `syncFromDom()` rebuilds `state` from the DOM order.
+- **Image search** calls the Wikimedia APIs (`SEARCH_SOURCES` in `app.js`). They're keyless and CORS-enabled through `origin=*`. Keep the app backend-free: no API keys, no servers.
+- Keep inputs at `font-size: 16px` or larger, or iOS Safari zooms in on focus.
+
+## Paths and deployment
+
+- Asset paths are **absolute** (`/tier-ranker/app.js`) because thorsteingames.com proxies `/tier-ranker` to this repo's GitHub Pages site (rewrites in the `thorstein-games-website` repo's `next.config.ts`). Keep new asset references in that form.
+- `.github/workflows/pages.yml` deploys `main` and copies an **explicit file list** (`index.html style.css app.js .nojekyll`). **If you add a file the site needs, add it to that `cp` line too.**
+
+## Running and verifying
+
+Serve the *parent* directory so the `/tier-ranker/` paths resolve:
+
+```sh
+cd .. && python3 -m http.server 8000   # open http://localhost:8000/tier-ranker/
+```
+
+- Syntax check: `node --check app.js`
+- There is no test suite. Verify UI changes in a browser. Playwright with Chromium works for headless checks. In sandboxes without outbound network, mock `*.wikipedia.org` / `commons.wikimedia.org` / `upload.wikimedia.org` with `page.route` (send `access-control-allow-origin: *`).
+- Check both desktop and phone widths (around 390px).
+
+## Style
+
+Match the existing code: `'use strict'`, `const`/arrow functions, the `$()` helper, `uid()` for ids, `toast()` for user feedback, terse comments only where intent isn't obvious. Update `README.md` when you add a user-facing feature.
