@@ -1,9 +1,10 @@
 # Tier Ranker
 
-Client-side tier list maker. Plain HTML/CSS/JS with **no build step, no dependencies, no package.json**. Everything lives in three files:
+Client-side tier list maker. Plain HTML/CSS/JS with **no build step, no dependencies, no package.json**. The code lives in three files, plus static images in `assets/`:
 
 - `index.html`: markup, including the image-search `<dialog>`.
 - `app.js`: all logic, organised into `/* ---- section ---- */` blocks: IndexedDB, state, rendering, rows, adding items, image search, drag & drop.
+- `assets/`: full logo (`logo.svg`), letterless `logo-mark.svg` (favicon and header, where the letters would be illegible), `apple-touch-icon.png` (180px, square, iOS rounds it) and `og-image.png` (1200×630 social preview). The PNGs are rendered from `logo.svg`, so regenerate them if the logo changes.
 - `style.css`: dark theme driven by CSS variables in `:root`. The single mobile breakpoint is `@media (max-width: 600px)`.
 
 ## Key invariants
@@ -18,7 +19,7 @@ Client-side tier list maker. Plain HTML/CSS/JS with **no build step, no dependen
 ## Paths and deployment
 
 - Asset paths are **absolute** (`/tier-ranker/app.js`) because thorsteingames.com proxies `/tier-ranker` to this repo's GitHub Pages site (rewrites in the `thorstein-games-website` repo's `next.config.ts`). Keep new asset references in that form.
-- `.github/workflows/pages.yml` deploys `main` and copies an **explicit file list** (`index.html style.css app.js .nojekyll`). **If you add a file the site needs, add it to that `cp` line too.**
+- `.github/workflows/pages.yml` deploys `main` and copies an **explicit file list** (`index.html style.css app.js assets .nojekyll`). **If you add a file the site needs, add it to that `cp` line too.**
 
 ## Running and verifying
 

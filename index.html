@@ -4,11 +4,24 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tier Ranker</title>
+  <meta name="description" content="Make tier lists in your browser. Drag, drop, rank anything." />
+  <meta name="theme-color" content="#17171a" />
+  <link rel="icon" href="/tier-ranker/assets/logo-mark.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/tier-ranker/assets/apple-touch-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Tier Ranker" />
+  <meta property="og:description" content="Make tier lists in your browser. Drag, drop, rank anything." />
+  <meta property="og:url" content="https://thorsteingames.com/tier-ranker" />
+  <meta property="og:image" content="https://thorsteingames.com/tier-ranker/assets/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="stylesheet" href="/tier-ranker/style.css" />
 </head>
 <body>
   <header class="topbar">
-    <h1 id="title" contenteditable="true" spellcheck="false" title="Click to rename"></h1>
+    <div class="brand">
+      <img class="logo" src="/tier-ranker/assets/logo-mark.svg" alt="Tier Ranker" width="40" height="40" />
+      <h1 id="title" contenteditable="true" spellcheck="false" title="Click to rename"></h1>
+    </div>
     <div class="topbar-actions">
       <button id="unrank-all" class="btn ghost" title="Move every item back to the pool">Unrank all</button>
       <button id="start-over" class="btn ghost danger" title="Delete everything and start fresh">Start over</button>
