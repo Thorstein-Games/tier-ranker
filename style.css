@@ -166,7 +166,7 @@ input:focus { outline: none; border-color: var(--accent); }
   margin: 12px 0 24px;
 }
 
-#open-search { margin-left: auto; }
+#add-item { margin-left: auto; }
 
 /* ---------- pool ---------- */
 .pool-section {
@@ -329,6 +329,7 @@ body.file-over::after {
 .search-results {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  grid-auto-rows: max-content; /* keep tiles full size; overflow scrolls instead of squeezing */
   gap: 8px;
   overflow-y: auto;
   min-height: 0;
@@ -350,7 +351,7 @@ body.file-over::after {
   text-align: left;
 }
 .result:hover, .result:focus-visible { border-color: var(--accent); outline: none; }
-.result img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--panel-2); }
+.result img { flex-shrink: 0; width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--panel-2); }
 .result span {
   padding: 4px 6px;
   font-size: 0.75rem;
