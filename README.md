@@ -1,3 +1,5 @@
+<img src="assets/logo.svg" alt="" width="96" align="right" />
+
 # Tier Ranker
 
 A tiny, client-side tier list maker (think TierMaker), built as a no-build static site: plain HTML, CSS and JavaScript.
