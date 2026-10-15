@@ -84,6 +84,8 @@ function save() {
 
 /* ---------------- elements ---------------- */
 const titleEl = $('#title');
+const baseTitle = document.title;
+const syncDocTitle = () => (document.title = state.title === 'My Tier List' ? baseTitle : `${state.title} – Tier Ranker`);
 const tiersEl = $('#tiers');
 const poolEl = $('#pool');
 const addRowBtn = $('#add-row');
@@ -177,6 +179,7 @@ function renderRow(row, index) {
 
 function render() {
   titleEl.textContent = state.title;
+  syncDocTitle();
   tiersEl.replaceChildren(...state.rows.map(renderRow));
   fillZone(poolEl, state.pool);
   addRowBtn.disabled = state.rows.length >= MAX_ROWS;
@@ -188,6 +191,7 @@ titleEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventD
 titleEl.addEventListener('blur', () => {
   state.title = titleEl.textContent.trim().slice(0, 80) || 'My Tier List';
   titleEl.textContent = state.title;
+  syncDocTitle();
   save();
 });
 
@@ -612,4 +616,5 @@ function deleteItem(id) {
   }
 }
 
+$('#year').textContent = new Date().getFullYear();
 render();

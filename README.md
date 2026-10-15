@@ -12,6 +12,7 @@ A tiny, client-side tier list maker (think TierMaker), built as a no-build stati
 - Up to **10 rows**, each with an editable name and color, and reorder/delete controls. Defaults: `S A B C D 💩`.
 - Drag an item onto the trash bin (appears while dragging) to delete it.
 - Double-click a text item to edit it; click the title or a row name to rename.
+- Link previews (Open Graph / Twitter card) show the share image; the page has SEO metadata, a short how-to/FAQ, and a footer linking back to Thorstein Games.
 - Everything is saved in the browser — nothing is uploaded anywhere. (Image search sends your search terms to the Wikimedia API.)
 
 ## Storage

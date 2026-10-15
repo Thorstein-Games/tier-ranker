@@ -7,6 +7,10 @@ Client-side tier list maker. Plain HTML/CSS/JS with **no build step, no dependen
 - `assets/`: full logo (`logo.svg`), letterless `logo-mark.svg` (favicon and header, where the letters would be illegible), `apple-touch-icon.png` (180px, square, iOS rounds it) and `og-image.png` (1200×630 social preview). The PNGs are rendered from `logo.svg`, so regenerate them if the logo changes.
 - `style.css`: dark theme driven by CSS variables in `:root`. The single mobile breakpoint is `@media (max-width: 600px)`.
 
+## SEO and sharing metadata
+
+`index.html`'s `<head>` has the title, description, canonical URL, Open Graph/Twitter tags and JSON-LD (`WebApplication` + `FAQPage`). Canonical and `og:*` URLs are absolute `https://thorsteingames.com/tier-ranker...`. The FAQ JSON-LD mirrors the visible FAQ in the `.about` section, so edit both together. The page `<h1>` is the "Tier Ranker" name line; the editable list title is an `<h2>`. The footer's "More Games" button matches Sheeple's, Find the Fox's and Bracket Maker's.
+
 ## Key invariants
 
 - **State** (`state`) is saved to `localStorage` under `tier-ranker:v1`. Its shape is `{ title, rows: [{id, name, color, items: [ids]}], pool: [ids], items: {id: item} }`. If you change the shape, keep `loadState()` able to read old saves, or bump the key.
