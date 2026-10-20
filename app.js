@@ -616,5 +616,4 @@ function deleteItem(id) {
   }
 }
 
-$('#year').textContent = new Date().getFullYear();
 render();

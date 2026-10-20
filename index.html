@@ -91,8 +91,11 @@
   }
   </script>
   <link rel="stylesheet" href="/tier-ranker/style.css" />
+  <!-- Shared Thorstein Games bar and footer (see CLAUDE.md). -->
+  <script src="https://thorsteingames.com/tg-bar.js" async></script>
 </head>
 <body>
+  <tg-bar game="tier-ranker"></tg-bar>
   <header class="topbar">
     <div class="brand">
       <img class="logo" src="/tier-ranker/assets/logo-mark.svg" alt="Tier Ranker" width="40" height="40" />
@@ -158,18 +161,7 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <nav class="footer-nav" aria-label="Footer">
-      <ul class="footer-links">
-        <li><a href="https://thorsteingames.com/">Home</a></li>
-        <li><a href="https://thorsteingames.com/bracket-maker">Bracket Maker</a></li>
-        <li><a href="https://thorsteingames.com/contact">Contact</a></li>
-        <li><a href="https://thorsteingames.com/privacy">Privacy</a></li>
-      </ul>
-      <a class="more-games" href="https://thorsteingames.com/" target="_blank" rel="noopener">More Games</a>
-    </nav>
-    <p class="footer-copy">© <span id="year">2026</span> Thorstein Games</p>
-  </footer>
+  <tg-footer game="tier-ranker"></tg-footer>
 
   <dialog id="search-dialog" class="search-dialog" aria-label="Search images">
     <div class="search-box">
