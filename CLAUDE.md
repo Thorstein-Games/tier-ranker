@@ -26,7 +26,7 @@ Client-side tier list maker. Plain HTML/CSS/JS with **no build step, no dependen
 
 ## Paths and deployment
 
-- Asset paths are **absolute** (`/tier-ranker/app.js`) because thorsteingames.com proxies `/tier-ranker` to this repo's GitHub Pages site (rewrites in the `thorstein-games-website` repo's `next.config.ts`). Keep new asset references in that form.
+- Asset paths are **absolute** (`/tier-ranker/app.js`) because thorsteingames.com proxies `/tier-ranker` to this repo's GitHub Pages site (proxy rules in the `thorstein-games-website` repo's `public/_redirects`). Keep new asset references in that form.
 - `.github/workflows/pages.yml` deploys `main` and copies an **explicit file list** (`index.html style.css app.js assets .nojekyll`). **If you add a file the site needs, add it to that `cp` line too.**
 
 ## Running and verifying
