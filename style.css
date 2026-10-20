@@ -404,6 +404,7 @@ body.file-over::after {
 /* ---------- shared Thorstein Games bar and footer (tg-bar.js) ---------- */
 /* The bar is 40px; hold its space before the script loads. */
 tg-bar:not(:defined) { display: block; height: 40px; background: #0b0b0e; }
+.page-ad { padding: 24px 0; }
 
 /* ---------- small screens ---------- */
 @media (max-width: 600px) {

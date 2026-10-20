@@ -15,6 +15,8 @@ Client-side tier list maker. Plain HTML/CSS/JS with **no build step, no dependen
 
 `index.html` loads `https://thorsteingames.com/tg-bar.js` (served by the thorstein-games-website repo, whose CLAUDE.md has the full contract) and uses `<tg-bar game="tier-ranker">` (thin site header, first in `<body>`, hides while scrolling down) and `<tg-footer game="tier-ranker">` (other games, More Games, contact, privacy, copyright) after `<main>`. The bar is always 40px; `style.css` holds that space before the script loads (`tg-bar:not(:defined)`). The page is longer than a screen, so the footer stays below the fold. When checking locally without network the elements stay empty, which is fine.
 
+Ads: a `<tg-ad format="banner">` sits between `<main>` and the footer (rules and options in the thorstein-games-website CLAUDE.md). Keep ads out of the tier list and the drag areas. Check placements with `?tgads=preview`.
+
 ## Key invariants
 
 - **State** (`state`) is saved to `localStorage` under `tier-ranker:v1`. Its shape is `{ title, rows: [{id, name, color, items: [ids]}], pool: [ids], items: {id: item} }`. If you change the shape, keep `loadState()` able to read old saves, or bump the key.
