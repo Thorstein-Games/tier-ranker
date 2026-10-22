@@ -1,0 +1,15 @@
+{
+  "title": "Snacks",
+  "rows": [
+    { "id": "rowS", "name": "S", "color": "#ff7f7f", "items": ["txt1", "url1"] },
+    { "id": "rowA", "name": "Great", "color": "#7fbfff", "items": [] },
+    { "id": "rowZ", "name": "Meh", "color": "#222222", "items": ["txt2", "ghost"] }
+  ],
+  "pool": ["txt3"],
+  "items": {
+    "txt1": { "id": "txt1", "type": "text", "text": "Crisps" },
+    "txt2": { "id": "txt2", "type": "text", "text": "Raisins" },
+    "txt3": { "id": "txt3", "type": "text", "text": "Popcorn" },
+    "url1": { "id": "url1", "type": "image", "url": "https://upload.wikimedia.org/w/one.png" }
+  }
+}

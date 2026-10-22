@@ -34,6 +34,18 @@ python3 -m http.server 8000
 # then visit http://localhost:8000/tier-ranker/
 ```
 
+## Tests
+
+The site itself has no dependencies; `package.json` is only for the [Playwright](https://playwright.dev) test suite (unit tests of `app.js` plus end-to-end flows at desktop and phone widths, with the Wikimedia APIs mocked).
+
+```sh
+npm ci
+npx playwright install chromium
+npm test
+```
+
+GitHub Actions runs the tests on every pull request and before each deploy of `main`. A failing run blocks the deploy.
+
 ## Possible next steps
 
 - Export the board as a PNG

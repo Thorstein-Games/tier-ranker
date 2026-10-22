@@ -15,7 +15,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Never deploy main with failing tests.
+  test:
+    uses: ./.github/workflows/test.yml
+    permissions:
+      contents: read
+
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     environment:
       name: github-pages
