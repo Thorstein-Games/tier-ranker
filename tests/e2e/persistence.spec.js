@@ -38,6 +38,9 @@ test('a deleted image is gone from IndexedDB after reload', async ({ app }) => {
     const b = await app.locator('#trash').boundingBox();
     return { x: b.x + b.width / 2, y: b.y + b.height / 2 };
   });
+  await expect(app.locator('#pool .item')).toHaveCount(0);
+  // deleteItem() removes the blob asynchronously; let it land before reloading.
+  await expect.poll(() => app.evaluate((id) => imageDB.get(id), id)).toBeUndefined();
   await app.reload();
   await expect(app.locator('#pool .item')).toHaveCount(0);
   expect(await app.evaluate((id) => imageDB.get(id), id)).toBeUndefined();
